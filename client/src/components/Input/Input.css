@@ -1,0 +1,43 @@
+.formMessages {
+  display: flex;
+  border-top: 2px solid #D3D3D3;
+  background-color: teal;
+}
+
+.inputMessage {
+  border: none;
+  padding: 30px;
+  width: 80%;
+  font-size: 1.2em;
+}
+
+input:focus, textarea:focus, select:focus{
+  outline: none;
+}
+
+.sendMessageBtn {
+  color: #fff !important;
+  text-transform: uppercase;
+  text-decoration: none;
+  background: #2a303a;
+  padding: 20px;
+  display: inline-block;
+  border: none;
+  width: 20%;
+}
+
+.emojiBtn{
+  color: #fff !important;
+  text-transform: uppercase;
+  text-decoration: none;
+  background: #2a303a;
+  padding: 20px;
+  display: inline-block;
+  border: none;
+  width: 5%;
+  min-width: 10px;
+}
+
+.emoji {
+  position: absolute;
+}
