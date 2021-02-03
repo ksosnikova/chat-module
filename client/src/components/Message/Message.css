@@ -1,9 +1,3 @@
-.messages {
-  padding: 10px 0;
-  overflow: auto;
-  flex: auto;
-}
-
 .messageContainer {
   display: flex;
   justify-content: flex-start;
@@ -14,20 +8,20 @@
 .messageBox {
   background: teal;
   border-radius: 20px;
-  padding: 10px 20px;
+  padding: 8px 16px;
   color: white;
   display: inline-block;
   max-width: 80%;
   margin: 0 10px;
 }
 
-.messageText {
-  width: 100%;
-  letter-spacing: 0;
-  float: left;
-  font-size: 1.1em;
-  word-wrap: break-word;
+.justifyStart {
+  justify-content: flex-start;
 }
+  
+/* .justifyEnd {
+  justify-content: flex-end;
+} */
 
 .sentMessage {
   display: flex;
@@ -35,3 +29,24 @@
   align-items: center;
 }
 
+.pl-10 {
+  padding-left: 10px;
+}
+  
+.pr-10 {
+  padding-right: 10px;
+}
+
+.justifyReverse {
+  flex-direction: row-reverse;
+}
+
+.messageBox.colored {
+  background-color: #bfb5b5;
+}
+
+.messageImg img {
+  max-height: 150px;
+  display: block;
+  margin: 0 auto;
+}

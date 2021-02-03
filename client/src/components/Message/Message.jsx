@@ -1,21 +1,38 @@
 import React from 'react';
-import ScrollToBottom from 'react-scroll-to-bottom';
 import './Message.css';
 
-const Message = ({ messageList }) => {
+export const Message = ({ message: { text, user, url = null }, name }) => {
+
+  let isSentByCurrentUser = false;
+
+  if (user === name) {
+     isSentByCurrentUser = true;
+  }
 
   return (
-    <ScrollToBottom className='messages'>
-      {messageList.map(({text, user }, i) => (<div key={i}>
-        <div className='messageContainer'>
-          <div className='messageBox'>
-            <p className='messageText'>{text}</p>
-          </div>
-          <p className='sentMessage'>{user}</p>
+      isSentByCurrentUser ? (<div className='messageContainer justifyReverse'>
+        <div className='messageBox colored'>
+          {!url && <p className='messageText pl-10'>{text}</p>}
+          {url &&  <p className='messageText pl-10'>
+          <a className='messageImg' href={url} download>
+          <img src={url} alt='file'/><br/>
+            {text}
+            </a>
+          </p>}
         </div>
-      </div>))}
-      </ScrollToBottom>
+        <p className='sentMessage'>{user}</p>
+      </div>) :
+      (<div className='messageContainer justifyStart'>
+        <div className='messageBox'>
+          {!url && <p className='messageText pl-10'>{text}</p>}
+          {url &&  <p className='messageText pl-10'>
+          <a className='messageImg' href={url} download>
+              <img src={url} alt='file'/><br/>
+                  {text}
+            </a>
+          </p>}
+        </div>
+        <p className='sentMessage'>{user}</p>
+      </div>)
   )
 }
-
-export default Message;

@@ -15,7 +15,7 @@
   justify-content: center;
   width: 80%;
   height: 80%;
-  border: 1px solid grey;
+  /* border: 1px solid grey; */
 }
 
 .chatMembers {
@@ -23,7 +23,7 @@
   padding-left: 10px;
   font-size: 22px;
   font-weight: 700;
-  width: 15%;
+  min-width: 15%;
   padding-left: 0;
   padding-top: 15px;
   margin: 0;
@@ -34,7 +34,7 @@
   list-style-type: none;
   text-align: center;
   /* font-style: italic; */
-  background-color: lightgray;
+  background-color: #bfb5b5;
   padding: 10px;
   border-radius: 10px;
   margin: 10px 5px;

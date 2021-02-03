@@ -3,13 +3,9 @@ import './Input.css';
 import { Picker } from 'emoji-mart';
 import 'emoji-mart/css/emoji-mart.css';
 
-const Input = ({ message, setMessage, sendMessage }) => {
+const Input = ({ message, setMessage, sendMessage, InputAddon }) => {
 
   const [emojiPickerVisible, setShowEmojiPicker] = useState(false);
-
-  // handleChange = (e) => {
-  //   setMessage(prev => { prev + e.target.value })
-  // }
 
   const toggleEmojiPicker = () => {
     setShowEmojiPicker(!emojiPickerVisible);
@@ -20,7 +16,6 @@ const Input = ({ message, setMessage, sendMessage }) => {
     setMessage(message => message + emoji);
     toggleEmojiPicker();
   };
-
 
   return (
     <>
@@ -33,9 +28,8 @@ const Input = ({ message, setMessage, sendMessage }) => {
           onChange={e => setMessage(e.target.value)}
           onKeyPress={e => e.key === 'Enter' ? sendMessage(e) : null}
         />
-
+         <button className='sentFilesBtn' onClick={InputAddon} id='InputAddon'></button>
         <button className='emojiBtn' onClick={toggleEmojiPicker}>&#128578;</button>
-
         <button className='sendMessageBtn' onClick={(e) => sendMessage(e)}>Send</button>
       </form>
       {emojiPickerVisible && <span className='emoji'><Picker onSelect={addEmoji} /></span>}

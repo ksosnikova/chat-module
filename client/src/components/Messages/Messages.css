@@ -1,0 +1,16 @@
+.messages {
+  padding: 10px 0;
+  overflow: auto;
+  flex: auto;
+}
+
+.messageText {
+  width: 100%;
+  letter-spacing: 0;
+  float: left;
+  font-size: 1.1em;
+  word-wrap: break-word;
+}
+
+
+

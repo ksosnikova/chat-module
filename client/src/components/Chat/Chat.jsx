@@ -1,11 +1,11 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import queryString from 'query-string';
 import io from 'socket.io-client';
 import SocketIOFileUpload from 'socketio-file-upload';
 
 import './Chat.css';
 import Input from '../Input/Input';
-import Message from '../Message/Message';
+import Messages from '../Messages/Messages';
 import { User } from '../User/User';
 
 let socket;
@@ -58,9 +58,7 @@ const Chat = ({ location }) => {
 
     socket.on('roomData', dataRoom => {
       let users = [];
-      const allUsers = dataRoom.users.forEach(item => {
-        users = [...users, item]
-      });
+      dataRoom.users.forEach(item => { users = [...users, item] });
       setUsersInRoom(users);
     })
 
@@ -69,17 +67,40 @@ const Chat = ({ location }) => {
     }
   }, [ENDPOINT, location.search]);
 
+
+
+  const fileRef = useRef(null);
+  const InputAddon = () => {
+    fileRef.current.click();
+  }
+
   useEffect(() => {
-    
+    const siofu = new SocketIOFileUpload(socket);
+    siofu.listenOnInput(fileRef.current);
+  }, [socket]);
+
+  // useEffect(() => {
+  //   socket.on('fileUpload', (message) => {
+  //     // setMessage(message);
+  //     setMessageList([...messageList, message]);
+  //   })
+  // }, []);
+
+
+
+  useEffect(() => {
+
     socket.on('messageHistory', messagesHistory => {
-      const messagesFormatted = messagesHistory.map(({ name, message }) => {
-      return { text: message, user: name }
-    });
-    setMessageList([...messageList, ...messagesFormatted]);
+      const messagesFormatted = messagesHistory.map(({ name, message, url }) => {
+        return { text: message, user: name, url }
+      });
+      setMessageList([...messageList, ...messagesFormatted]);
     });
 
-    socket.on('message', (message) => {
-      setMessageList([...messageList, message])
+
+    socket.on('message', ( { user, text, url }) => {
+
+      setMessageList([...messageList, { text, user, url }])
     });
 
     socket.on('private', (message) => {
@@ -91,10 +112,12 @@ const Chat = ({ location }) => {
   const sendMessage = async (e) => {
 
     e.preventDefault();
-
+    console.log('FRONT SEND MESSAGE', message)
     socket.emit('sendMessage', message, () => {
       setMessage('');
+      console.log('in send', message)
     });
+    console.log('FRONT SEND MESSAGE END', message)
   }
 
   const sendPrivateMsg = (user) => {
@@ -117,8 +140,14 @@ const Chat = ({ location }) => {
         )}
         </ul>
         <div className='chatInnerContainer'>
-          <Message messageList={messageList} />
-          <Input message={message} setMessage={setMessage} sendMessage={sendMessage} name={name} />
+          <Messages messageList={messageList} name={name} />
+          <Input message={message} setMessage={setMessage} sendMessage={sendMessage} name={name} InputAddon={InputAddon}/>
+          <input
+            ref={fileRef}
+            label="file-picker"
+            type="file"
+            style={{ display: 'none' }}
+          />
         </div>
       </div>
     </div>
