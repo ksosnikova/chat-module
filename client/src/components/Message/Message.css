@@ -1,52 +1,42 @@
 .messageContainer {
-  display: flex;
   justify-content: flex-start;
-  /* padding: 0 5%; */
   margin-top: 3px;
+  padding: 5px 10px 0;
 }
 
-.messageBox {
-  background: teal;
+.messageSentBy {
+  background: #79C7C5;
   border-radius: 20px;
-  padding: 8px 16px;
+  padding: 9px 14px;
   color: white;
   display: inline-block;
   max-width: 80%;
-  margin: 0 10px;
 }
 
-.justifyStart {
-  justify-content: flex-start;
+.messageSentBy.colored {
+  background-color: #989898;
 }
-  
-/* .justifyEnd {
-  justify-content: flex-end;
-} */
 
 .sentMessage {
-  display: flex;
-  justify-content: center;
-  align-items: center;
+  padding: 7px 11px 4px;
+  margin: 0;
+  font-size: 12px;
 }
 
-.pl-10 {
-  padding-left: 10px;
-}
-  
-.pr-10 {
-  padding-right: 10px;
+.reverse {
+  text-align: right;
 }
 
-.justifyReverse {
-  flex-direction: row-reverse;
-}
 
-.messageBox.colored {
-  background-color: #bfb5b5;
-}
-
-.messageImg img {
+.messageBox img {
   max-height: 150px;
   display: block;
   margin: 0 auto;
+}
+
+.messageBox {
+  width: 100%; 
+  font-size: 13px;
+  margin: 0;
+  text-align: left;
 }

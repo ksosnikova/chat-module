@@ -1,13 +1,3 @@
-* {
-  box-sizing: border-box;
-}
-
-html, body {
-  font-family: 'Roboto', sans-serif;
-  padding: 0;
-  margin: 0;
-}
-
 #root {
   height: 100vh;
 }
@@ -28,26 +18,32 @@ html, body {
   border-radius: 0;
   padding: 15px 20px;
   width: 100%;
-  margin-top: 20px;
+  margin-top: 15px;
 }
 
 .heading {
   text-align: center;
-  font-size: 2.5em;
-  border-bottom: 2px solid white;
+  font-size: 34px;
+  border-bottom: 1px solid rgba(255,255,255,.6);
+  padding-bottom: 15px;
+  font-weight: 400;
+  margin-top: 0;
 }
 
 .button {
-    color: #fff;
-    text-transform: uppercase;
-    text-decoration: none;
-    background: teal;
-    padding: 20px;
-    border-radius: 5px;
-    display: inline-block;
-    border: none;
-    width: 100%;
-    margin-top: 20px;
+  color: #fff;
+  text-transform: uppercase;
+  text-decoration: none;
+  background: #79C7C5;
+  padding: 4px 10px;
+  border-radius: 4px;
+  display: inline-block;
+  border: none;
+  width: 100%;
+  margin-top: 20px;
+  font: 14px 'Roboto', sans-serif;
+  height: 42px;
+  cursor: pointer;
 }
 
 @media (min-width: 320px) and (max-width: 480px) {

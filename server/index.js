@@ -5,16 +5,17 @@ const fs = require('fs');
 const http = require('http');
 const config = require('config');
 const mongoose = require('mongoose');
-//const router = express.Router();
-const SocketIOFileUpload = require('socketio-file-upload');
+const router = express.Router();
+const siofu = require('socketio-file-upload');
+const mime = require('mime-types');
 
 const Room = require('./models/Room');
 const { addUser, removeUser, getUser, getUsersInRoom } = require('./users.js');
 
 const app = express()
-  .use(SocketIOFileUpload.router)
   .use(express.json({ extended: true })) //middleware
-  .use(express.static(__dirname + '/public'));
+  .use(siofu.router)
+  .use(express.static(path.join(__dirname + './public')));
 
 //app.use('/chat', require('./routes/chat.routes'));
 
@@ -26,8 +27,6 @@ const io = socketio(server, {
     origin: '*'
   }
 });
-
-
 
 server.listen(PORT, async () => {
   try {
@@ -45,6 +44,7 @@ server.listen(PORT, async () => {
 
 
 io.on('connect', (socket) => {
+
   console.log(`We have a new ${socket.id} connection!`);
 
   socket.on('join', async ({ name, room }, cb) => {
@@ -58,7 +58,7 @@ io.on('connect', (socket) => {
     if (error) return cb(error);
 
     socket.join(user.room);
-    io.to(user.room).emit('roomData', { room: user.room, users: getUsersInRoom(user.room) });
+    io.to(user.room).emit('roomData', { room: user.room, users: getUsersInRoom(user.room), user });
     socket.emit('message', { user: 'admin', text: `${user.name}, welcome to the room ${user.room}` });
     socket.broadcast.to(user.room).emit('message', { user: 'admin', text: `${user.name} has joined!` });
 
@@ -66,23 +66,27 @@ io.on('connect', (socket) => {
   });
 
 
-  const uploader = new SocketIOFileUpload();
+  const uploader = new siofu();
   uploader.dir = './public';
   uploader.listen(socket);
 
-  uploader.on('start', (event) => {
-    console.log('BECK UPLOAD START')
-  });
+  // uploader.on('start', (event) => {
+  //   console.log('BECK UPLOAD START')
+  // });
 
   uploader.on('saved', async (event) => {
 
-    const url = event.file.pathName;
-   // console.log('file:', event.file);
-
-    fs.readFile(event.file.pathName, async (err, data) => {
+    fs.readFile(event.file.pathName, {
+      flag: 'r'
+    }, async (err, data) => {
       const { name, room, id } = getUser(socket.id);
-      const url = `data:${event.file.name}/png;base64,` + data.toString('base64');
-      io.to(room).emit('message', { user: name, text: event.file.name, url: url });
+      // const contents = fs.readFileSync(event.file.pathName, {encoding: 'base64'});
+      // const encoded = Buffer.from(data).toString('base64');
+      const mimeType = mime.lookup(path.extname(event.file.pathName));
+      const encoded = data.toString('base64');
+      const url = `data:${mimeType};base64,${encoded}`;
+
+      io.to(room).emit('message', { user: name, text: event.file.name, url });
 
       const roomData = new Room({ name, room, message: event.file.name, url });
       await roomData.save();
@@ -93,24 +97,21 @@ io.on('connect', (socket) => {
     uploader.on('error', (event) => {
       console.log("Error from uploader", event);
     });
-
-  })
+  });
 
   socket.on('sendMessage', async (message, cb) => {
-    console.log('SENT MESSAGE')
     const user = getUser(socket.id);
     const { name, room, id } = user;
     const roomData = new Room({ name, room, message });
     await roomData.save();
 
     io.to(user.room).emit('message', { user: name, text: message });
-    console.log('message', message)
     cb();
   });
 
   socket.on('private', ({ message, socketId }) => {
-    console.log('In private', message, socketId)
-    io.to(socketId).emit('private', { user: 'sent in private', text: message });
+    const { name } = getUser(socket.id);
+    io.to(socketId).emit('private', { user: `sent in private from ${name}`, text: message });
   });
 
   socket.on('disconnect', () => {
@@ -121,6 +122,7 @@ io.on('connect', (socket) => {
       io.to(user.room).emit('roomData', { room: user.room, users: getUsersInRoom(user.room) });
     }
   })
+
 })
 
 

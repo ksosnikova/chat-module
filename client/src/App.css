@@ -1,0 +1,33 @@
+@import url('https://fonts.googleapis.com/css2?family=Roboto&display=swap');
+
+* {
+  box-sizing: border-box;
+}
+
+img {
+  max-width: 100%
+}
+
+html {
+  display: grid;
+  min-height: 100%;
+}
+
+body {
+  font-family: 'Roboto', sans-serif;
+  padding: 0;
+  margin: 0;
+  display: grid;
+  background: linear-gradient(to bottom left, #79C7C5 40%, #F9FBFF 100%);
+  min-height: 100%;
+  font-size: 14px;
+}
+
+img {
+  color: #fff;
+}
+
+a {
+  text-decoration: none;
+  color: #fff;
+}

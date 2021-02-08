@@ -28,7 +28,7 @@ const Input = ({ message, setMessage, sendMessage, InputAddon }) => {
           onChange={e => setMessage(e.target.value)}
           onKeyPress={e => e.key === 'Enter' ? sendMessage(e) : null}
         />
-         <button className='sentFilesBtn' onClick={InputAddon} id='InputAddon'></button>
+        <button className='sentFilesBtn' onClick={InputAddon} id='InputAddon'></button>
         <button className='emojiBtn' onClick={toggleEmojiPicker}>&#128578;</button>
         <button className='sendMessageBtn' onClick={(e) => sendMessage(e)}>Send</button>
       </form>

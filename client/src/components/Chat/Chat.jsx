@@ -29,34 +29,34 @@ const Chat = ({ location }) => {
     setName(name);
     setRoom(room);
 
-    const loginHandler = async () => {
-      try {
-        console.log('room name', room, name)
-        //const data = await request('/chat', 'POST', { name, room });
-        const response = await fetch('/chat', {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json;charset=utf-8'
-          },
-          body: JSON.stringify({ room, name })
-        });
-        const data = await response.json();
-        // const historyMessages = data.forEach(elem => {
-        //   elem.
-        // });
-        console.log('data from server', data)
-      } catch (e) {
-        console.log(e);
-      }
-    }
+    // const loginHandler = async () => {
+    //   try {
+    //     console.log('room name', room, name)
+    //     //const data = await request('/chat', 'POST', { name, room });
+    //     const response = await fetch('/chat', {
+    //       method: 'POST',
+    //       headers: {
+    //         'Content-Type': 'application/json;charset=utf-8'
+    //       },
+    //       body: JSON.stringify({ room, name })
+    //     });
+    //     const data = await response.json();
+    //     // const historyMessages = data.forEach(elem => {
+    //     //   elem.
+    //     // });
+    //     console.log('data from server', data)
+    //   } catch (e) {
+    //     console.log(e);
+    //   }
+    // }
     //loginHandler();
-
 
     socket.emit('join', { name, room }, (error) => {
       if (error) alert(error);
     });
 
     socket.on('roomData', dataRoom => {
+      console.log('data', dataRoom)
       let users = [];
       dataRoom.users.forEach(item => { users = [...users, item] });
       setUsersInRoom(users);
@@ -77,16 +77,7 @@ const Chat = ({ location }) => {
   useEffect(() => {
     const siofu = new SocketIOFileUpload(socket);
     siofu.listenOnInput(fileRef.current);
-  }, [socket]);
-
-  // useEffect(() => {
-  //   socket.on('fileUpload', (message) => {
-  //     // setMessage(message);
-  //     setMessageList([...messageList, message]);
-  //   })
-  // }, []);
-
-
+  }, []);
 
   useEffect(() => {
 
@@ -98,8 +89,7 @@ const Chat = ({ location }) => {
     });
 
 
-    socket.on('message', ( { user, text, url }) => {
-
+    socket.on('message', ({ user, text, url }) => {
       setMessageList([...messageList, { text, user, url }])
     });
 
@@ -112,12 +102,9 @@ const Chat = ({ location }) => {
   const sendMessage = async (e) => {
 
     e.preventDefault();
-    console.log('FRONT SEND MESSAGE', message)
     socket.emit('sendMessage', message, () => {
       setMessage('');
-      console.log('in send', message)
     });
-    console.log('FRONT SEND MESSAGE END', message)
   }
 
   const sendPrivateMsg = (user) => {
@@ -126,27 +113,30 @@ const Chat = ({ location }) => {
   };
 
   return (
-
     <div className='chatWrapper'>
-      <h1 className='chatHeading'>{room}</h1>
       <div className='chatContainer'>
-        <ul className='chatMembers'>members:
-          {usersInRoom.map((item, i) =>
-          <User
-            onClick={() => sendPrivateMsg(item)}
-            name={item.name}
-            key={i}
-          />
-        )}
-        </ul>
+        <h1 className='chatHeading'>{room}</h1>
+        <div className='chatMembers'>
+          <h2 className='chatMembersTitle'>Members:</h2>
+          <ul className='chatMembersList'>
+            {usersInRoom.map((item, i) =>
+              <User
+                onClick={() => sendPrivateMsg(item)}
+                name={item.name}
+                isCurrentUser={(name === item.name)}
+                key={i}
+              />
+            )}
+          </ul>
+        </div>
         <div className='chatInnerContainer'>
           <Messages messageList={messageList} name={name} />
-          <Input message={message} setMessage={setMessage} sendMessage={sendMessage} name={name} InputAddon={InputAddon}/>
+          <Input message={message} setMessage={setMessage} sendMessage={sendMessage} name={name} InputAddon={InputAddon} />
           <input
             ref={fileRef}
             label="file-picker"
             type="file"
-            style={{ display: 'none' }}
+            className='inputFile'
           />
         </div>
       </div>
