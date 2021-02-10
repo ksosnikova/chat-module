@@ -10,14 +10,12 @@ const siofu = require('socketio-file-upload');
 const mime = require('mime-types');
 
 const Room = require('./models/Room');
-const { addUser, removeUser, getUser, getUsersInRoom } = require('./users.js');
+const { addUser, removeUser, getUser, getUsersInRoom, getUserByName } = require('./users.js');
 
 const app = express()
-  .use(express.json({ extended: true })) //middleware
+  .use(express.json({ extended: true })) 
   .use(siofu.router)
   .use(express.static(path.join(__dirname + './public')));
-
-//app.use('/chat', require('./routes/chat.routes'));
 
 const PORT = config.get('port') || 5000;
 
@@ -67,7 +65,7 @@ io.on('connect', (socket) => {
 
 
   const uploader = new siofu();
-  uploader.dir = './public';
+  uploader.dir = __dirname + '/public';
   uploader.listen(socket);
 
   // uploader.on('start', (event) => {
@@ -80,8 +78,6 @@ io.on('connect', (socket) => {
       flag: 'r'
     }, async (err, data) => {
       const { name, room, id } = getUser(socket.id);
-      // const contents = fs.readFileSync(event.file.pathName, {encoding: 'base64'});
-      // const encoded = Buffer.from(data).toString('base64');
       const mimeType = mime.lookup(path.extname(event.file.pathName));
       const encoded = data.toString('base64');
       const url = `data:${mimeType};base64,${encoded}`;
@@ -109,9 +105,10 @@ io.on('connect', (socket) => {
     cb();
   });
 
-  socket.on('private', ({ message, socketId }) => {
-    const { name } = getUser(socket.id);
-    io.to(socketId).emit('private', { user: `sent in private from ${name}`, text: message });
+  socket.on('private', ({ message, name, nameToPrivate }) => {
+    console.log('messagem name nametoPtr', message, name, nameToPrivate)
+    const { id }  = getUserByName(nameToPrivate);
+    io.to(id).emit('private', { user: `sent in private from ${name}`, text: message });
   });
 
   socket.on('disconnect', () => {

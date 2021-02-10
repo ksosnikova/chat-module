@@ -1,5 +1,6 @@
 import React from 'react';
 import './Message.css';
+import pic from '../../assets/images/file.png';
 
 export const Message = ({ message: { text, user, url = null }, name }) => {
 
@@ -37,11 +38,14 @@ export const Message = ({ message: { text, user, url = null }, name }) => {
         {url && <div className='messageBox'>
           {isImage(file) ?
             (<>
-                <img src={url} alt={text} />
-                <a href={url} download={text}>{text}</a>
-                </>)
+            <img className='messageImg' src={url} alt={text} />
+            <a href={url} download={text}>{text}</a>
+            </>)
             :
+            <>
+            <img className='messageFile' src={pic} alt={text} />
             <a href={URL.createObjectURL(file)} download={text}>{text}</a>
+            </>
           }
         </div>}
       </div>

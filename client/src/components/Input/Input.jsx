@@ -1,9 +1,9 @@
 import React, { useState } from 'react';
-import './Input.css';
 import { Picker } from 'emoji-mart';
+import './Input.css';
 import 'emoji-mart/css/emoji-mart.css';
 
-const Input = ({ message, setMessage, sendMessage, InputAddon }) => {
+const Input = ({ message, setMessage, sendMessage, inputAddon, userInPrivate }) => {
 
   const [emojiPickerVisible, setShowEmojiPicker] = useState(false);
 
@@ -22,13 +22,13 @@ const Input = ({ message, setMessage, sendMessage, InputAddon }) => {
       <form className='formMessages' onSubmit={(e) => e.preventDefault()}>
         <input
           type='text'
-          placeholder='Type a message'
+          placeholder={ userInPrivate? `type a private message to ${userInPrivate}` : 'Type a message'}
           className='inputMessage'
           value={message}
-          onChange={e => setMessage(e.target.value)}
-          onKeyPress={e => e.key === 'Enter' ? sendMessage(e) : null}
-        />
-        <button className='sentFilesBtn' onClick={InputAddon} id='InputAddon'></button>
+          onChange={ e => setMessage(e.target.value)}
+          onKeyPress={ e => e.key === 'Enter' && sendMessage(e)}
+         />
+        <button className='sentFilesBtn' onClick={inputAddon} id='InputAddon'></button>
         <button className='emojiBtn' onClick={toggleEmojiPicker}>&#128578;</button>
         <button className='sendMessageBtn' onClick={(e) => sendMessage(e)}>Send</button>
       </form>

@@ -27,16 +27,27 @@
   text-align: right;
 }
 
-
-.messageBox img {
-  max-height: 150px;
-  display: block;
-  margin: 0 auto;
-}
-
 .messageBox {
   width: 100%; 
   font-size: 13px;
   margin: 0;
   text-align: left;
+}
+
+.messageBox .messageImg {
+  max-height: 150px;
+  display: block;
+  margin: 0 auto;
+}
+
+.messageBox .messageFile {
+  max-height: 15px;
+  display: inline-block;
+  vertical-align: middle;
+  /* margin: 0 auto; */
+}
+
+.messageBox a {
+  vertical-align: middle;
+  padding-left: 3px;
 }

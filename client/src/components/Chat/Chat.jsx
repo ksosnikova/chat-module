@@ -17,10 +17,18 @@ const Chat = ({ location }) => {
   const [message, setMessage] = useState('');
   const [messageList, setMessageList] = useState([]);
   const [usersInRoom, setUsersInRoom] = useState([]);
+  const [userInPrivate, setUserInPrivate] = useState('');
 
   const ENDPOINT = 'localhost:5000';
 
+  const handleEsc = (e) => {
+    if (e.code === 'Escape' || e.code === 'Esc') {
+      setUserInPrivate('');
+    }
+  };
+
   useEffect(() => {
+    document.addEventListener('keydown', handleEsc);
 
     const { name, room } = queryString.parse(location.search);
 
@@ -56,7 +64,6 @@ const Chat = ({ location }) => {
     });
 
     socket.on('roomData', dataRoom => {
-      console.log('data', dataRoom)
       let users = [];
       dataRoom.users.forEach(item => { users = [...users, item] });
       setUsersInRoom(users);
@@ -64,9 +71,9 @@ const Chat = ({ location }) => {
 
     return () => {
       socket.disconnect();
+      document.removeEventListener('keydown', handleEsc);
     }
   }, [ENDPOINT, location.search]);
-
 
 
   const fileRef = useRef(null);
@@ -102,15 +109,17 @@ const Chat = ({ location }) => {
   const sendMessage = async (e) => {
 
     e.preventDefault();
-    socket.emit('sendMessage', message, () => {
-      setMessage('');
-    });
-  }
 
-  const sendPrivateMsg = (user) => {
-    socket.emit('private', { message: message, socketId: user.id });
-    setMessage('');
-  };
+    if (userInPrivate) {
+      socket.emit('private', { message, name, nameToPrivate: userInPrivate });
+      setMessage('');
+      setUserInPrivate('');
+    } else {
+      socket.emit('sendMessage', message, () => {
+        setMessage('');
+      });
+    }
+  }
 
   return (
     <div className='chatWrapper'>
@@ -121,7 +130,7 @@ const Chat = ({ location }) => {
           <ul className='chatMembersList'>
             {usersInRoom.map((item, i) =>
               <User
-                onClick={() => sendPrivateMsg(item)}
+                onClick={() => setUserInPrivate(item.name)}
                 name={item.name}
                 isCurrentUser={(name === item.name)}
                 key={i}
@@ -130,12 +139,22 @@ const Chat = ({ location }) => {
           </ul>
         </div>
         <div className='chatInnerContainer'>
-          <Messages messageList={messageList} name={name} />
-          <Input message={message} setMessage={setMessage} sendMessage={sendMessage} name={name} InputAddon={InputAddon} />
+          <Messages
+            messageList={messageList}
+            name={name}
+          />
+          <Input
+            message={message}
+            setMessage={setMessage}
+            sendMessage={sendMessage}
+            name={name}
+            inputAddon={InputAddon}
+            userInPrivate={userInPrivate}
+          />
           <input
             ref={fileRef}
-            label="file-picker"
-            type="file"
+            label='file-picker'
+            type='file'
             className='inputFile'
           />
         </div>
