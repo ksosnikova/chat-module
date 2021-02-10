@@ -1,0 +1,26 @@
+{
+  "name": "chat-app",
+  "version": "1.0.0",
+  "description": "chat",
+  "engines": {
+    "node": "10.x"
+  },
+  "scripts": {
+    "start": "node index.js",
+    "heroku-postbuild": "cd client/ && npm install && npm run build"
+  },
+  "cacheDirectories": [
+    "node_modules",
+    "client/node_modules"
+  ],
+  "dependencies": {
+    "express": "^4.16.4"
+  },
+  "keywords": [
+    "node",
+    "heroku",
+    "react"
+  ],
+  "license": "",
+  "devDependencies": {}
+}
