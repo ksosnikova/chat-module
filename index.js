@@ -33,8 +33,6 @@ if (process.env.NODE_ENV === 'production') {
   });
 }
 
-
-
 app.get('*', (req, res) => {
   res.sendFile(path.join(__dirname + '/client/public/index.html'));
 })
@@ -128,7 +126,6 @@ io.on('connect', (socket) => {
   });
 
   socket.on('private', ({ message, name, nameToPrivate }) => {
-    console.log('messagem name nametoPtr', message, name, nameToPrivate)
     const { id } = getUserByName(nameToPrivate);
     io.to(id).emit('private', { user: `sent in private from ${name}`, text: message });
   });
