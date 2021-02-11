@@ -31,7 +31,7 @@ app.get('*', (req, res) => {
   res.sendFile(path.join(__dirname + '/client/public/index.html'));
 })
 
-const PORT = config.get('port') || 5000;
+const PORT = process.env.PORT || config.get('port') || 5000;
 
 const server = http.createServer(app);
 const io = socketio(server, {
