@@ -90,7 +90,7 @@ io.on('connect', (socket) => {
 
   // uploader.on('start', (event) => {
   //   console.log('BECK UPLOAD START')
-  // });
+  // ;
 
   uploader.on('saved', async (event) => {
 
@@ -137,9 +137,11 @@ io.on('connect', (socket) => {
       io.to(user.name).emit('message', { user: 'admin', text: `${user.name} has left.` });
       io.to(user.room).emit('roomData', { room: user.room, users: getUsersInRoom(user.room) });
     }
-  })
+  });
 
 })
+
+
 
 
 
