@@ -15,8 +15,8 @@ const { addUser, removeUser, getUser, getUsersInRoom, getUserByName } = require(
 const app = express()
   .use(express.json({ extended: true })) 
   .use(siofu.router)
-  .use(express.static(path.join(__dirname, 'public', 'build')))
-  //.use(express.static(path.join(__dirname, 'build')));
+  .use(express.static(path.join(__dirname, 'public')))
+  .use(express.static(path.join(__dirname, 'build')));
 
 
   app.get('/*', (req, res) => {

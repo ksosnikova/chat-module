@@ -1,26 +1,27 @@
 {
-  "name": "chat-app",
+  "name": "server",
   "version": "1.0.0",
-  "description": "chat",
-  "engines": {
-    "node": "10.x"
-  },
+  "description": "",
+  "main": "index.js",
   "scripts": {
-    "start": "node index.js",
+    "start": "nodemon index.js",
+    "dev": "nodemon index.js",
     "heroku-postbuild": "cd client/ && npm install && npm run build"
   },
-  "cacheDirectories": [
-    "node_modules",
-    "client/node_modules"
-  ],
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
   "dependencies": {
-    "express": "^4.16.4"
+    "config": "^3.3.3",
+    "cors": "^2.8.5",
+    "express": "^4.17.1",
+    "mime-types": "^2.1.28",
+    "mongoose": "^5.11.12",
+    "nodeman": "^1.1.2",
+    "socket.io": "^3.0.5",
+    "socketio-file-upload": "^0.7.3"
   },
-  "keywords": [
-    "node",
-    "heroku",
-    "react"
-  ],
-  "license": "",
-  "devDependencies": {}
+  "devDependencies": {
+    "nodemon": "^2.0.7"
+  }
 }
