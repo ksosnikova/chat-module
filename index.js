@@ -15,12 +15,12 @@ const { addUser, removeUser, getUser, getUsersInRoom, getUserByName } = require(
 const app = express()
   .use(express.json({ extended: true })) 
   .use(siofu.router)
-  .use(express.static(__dirname))
+  // .use(express.static(__dirname))
   .use(express.static(path.join(__dirname, 'public')))
-  .use(express.static(path.join(__dirname, 'client/build')));
+  .use(express.static(path.join(__dirname, '/client/build/')));
 
   app.get('/*', (req, res) => {
-    res.sendFile(path.join(__dirname, 'client/build', 'index.html'));
+    res.sendFile(path.join(__dirname, '/client/build/', 'index.html'));
   });
 
 const PORT = config.get('port') || 5000;
