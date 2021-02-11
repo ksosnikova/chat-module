@@ -13,15 +13,23 @@ const Room = require('./models/Room');
 const { addUser, removeUser, getUser, getUsersInRoom, getUserByName } = require('./users.js');
 
 const app = express()
-  .use(express.json({ extended: true })) 
+  .use(express.json({ extended: true }))
   .use(siofu.router)
   // .use(express.static(__dirname))
   .use(express.static(path.join(__dirname, 'public')))
-  .use(express.static(path.join(__dirname, '/client/build/')));
+  .use(express.static(path.join(__dirname, 'client/build')));
+
+if (process.env.NODE_ENV === 'production') {
+  app.use(express.static(path.join(__dirname, 'client/build')));
 
   app.get('/*', (req, res) => {
-    res.sendFile(path.join(__dirname, '/client/build/', 'index.html'));
+    res.sendFile(path.join(__dirname = '/client/build/index.html'));
   });
+}
+
+app.get('*', (req, res) => {
+  res.sendFile(path.join(__dirname + '/client/public/index.html'));
+})
 
 const PORT = config.get('port') || 5000;
 
@@ -113,7 +121,7 @@ io.on('connect', (socket) => {
 
   socket.on('private', ({ message, name, nameToPrivate }) => {
     console.log('messagem name nametoPtr', message, name, nameToPrivate)
-    const { id }  = getUserByName(nameToPrivate);
+    const { id } = getUserByName(nameToPrivate);
     io.to(id).emit('private', { user: `sent in private from ${name}`, text: message });
   });
 
