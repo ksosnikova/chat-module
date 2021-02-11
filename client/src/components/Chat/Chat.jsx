@@ -19,7 +19,7 @@ const Chat = ({ location }) => {
   const [usersInRoom, setUsersInRoom] = useState([]);
   const [userInPrivate, setUserInPrivate] = useState('');
 
-  const ENDPOINT = 'localhost:5000';
+  //const ENDPOINT = 'localhost:5000';
 
   const handleEsc = (e) => {
     if (e.code === 'Escape' || e.code === 'Esc') {
@@ -32,7 +32,7 @@ const Chat = ({ location }) => {
 
     const { name, room } = queryString.parse(location.search);
 
-    socket = io(ENDPOINT);
+    socket = io('https://chat-app-module.herokuapp.com:80' || 'http://localhost:8080');
 
     setName(name);
     setRoom(room);
