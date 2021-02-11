@@ -20,7 +20,7 @@ const Chat = ({ location }) => {
   const [userInPrivate, setUserInPrivate] = useState('');
 
   const ENDPOINT = 'localhost:5000';
-  const HEROKUENDPOINT = 'https://chat-app-module.herokuapp.com:80';
+  const HEROKUENDPOINT = 'https://chat-app-module.herokuapp.com';
 
   const handleEsc = (e) => {
     if (e.code === 'Escape' || e.code === 'Esc') {
