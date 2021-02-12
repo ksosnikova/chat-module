@@ -49,6 +49,7 @@
 @media (min-width: 320px) and (max-width: 480px) {
   .loginContainer {
     height: 100%;
+    min-width: 280px;
   }
 
   .loginInnerContainer {

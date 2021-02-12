@@ -19,7 +19,7 @@ const Chat = ({ location }) => {
   const [usersInRoom, setUsersInRoom] = useState([]);
   const [userInPrivate, setUserInPrivate] = useState('');
 
-  const ENDPOINT = 'localhost:5000';
+  //const ENDPOINT = 'localhost:5000';
   const HEROKUENDPOINT = 'https://chat-app-module.herokuapp.com';
 
   const handleEsc = (e) => {
@@ -112,7 +112,7 @@ const Chat = ({ location }) => {
     e.preventDefault();
 
     if (userInPrivate) {
-      socket.emit('private', { message, name, nameToPrivate: userInPrivate });
+      socket.emit('private', { message, namePrivateFrom: name, namePrivateTo: userInPrivate });
       setMessage('');
       setUserInPrivate('');
     } else {

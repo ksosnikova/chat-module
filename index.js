@@ -15,7 +15,6 @@ const { addUser, removeUser, getUser, getUsersInRoom, getUserByName } = require(
 const app = express()
   .use(express.json({ extended: true }))
   .use(siofu.router)
-  // .use(express.static(__dirname))
   .use(express.static(path.join(__dirname, 'public')))
   .use(express.static(path.join(__dirname, 'client/build')));
 
@@ -125,9 +124,11 @@ io.on('connect', (socket) => {
     cb();
   });
 
-  socket.on('private', ({ message, name, nameToPrivate }) => {
-    const { id } = getUserByName(nameToPrivate);
-    io.to(id).emit('private', { user: `sent in private from ${name}`, text: message });
+  socket.on('private', ({ message, namePrivateFrom, namePrivateTo }) => {
+    const { id } = getUserByName(namePrivateTo);
+    io.to(id).emit('private', { user: `sent in private from ${namePrivateFrom}`, text: message });
+    const { id: idSender } = getUserByName(namePrivateFrom);
+    io.to(idSender).emit('private', { user: `private message to ${namePrivateTo}`, text: message });
   });
 
   socket.on('disconnect', () => {
@@ -140,24 +141,3 @@ io.on('connect', (socket) => {
   });
 
 })
-
-
-
-
-
-//  async function start() {
-//    try {
-//      await mongoose.connect(config.get('mongoUri'), {
-//       useNewUrlParser: true,
-//       useUnifiedTopology: true,
-//       useCreateIndex: true
-//      })
-//      server.listen(PORT, () => {
-//       console.log(`Server has started on port ${PORT}`)
-//     });
-//    } catch (e) {
-//      console.log('Server error', e.message)
-//      process.exit(1)
-//    }
-//  }
-// start()

@@ -6,7 +6,7 @@ export const Message = ({ message: { text, user, url = null }, name }) => {
 
   let isSentByCurrentUser = false;
 
-  if (user === name) {
+  if ((user === name) || (user.includes('private'))) {
     isSentByCurrentUser = true;
   }
 
@@ -35,19 +35,19 @@ export const Message = ({ message: { text, user, url = null }, name }) => {
       <p className='sentMessage'>{user}</p>
       <div className={isSentByCurrentUser ? 'messageSentBy colored' : 'messageSentBy'}>
         {!url && <div className='messageBox'>{text}</div>}
-        {url && <div className='messageBox'>
-          {isImage(file) ?
-            (<>
-            <img className='messageImg' src={url} alt={text} />
-            <a href={url} download={text}>{text}</a>
-            </>)
+        {url &&
+          (isImage(file) ?
+            <div className='messageBox'>
+              <img className='messageImg' src={url} alt={text} />
+              <a href={url} download={text}>{text}</a>
+            </div>
             :
-            <>
-            <img className='messageFile' src={pic} alt={text} />
-            <a href={URL.createObjectURL(file)} download={text}>{text}</a>
-            </>
-          }
-        </div>}
+            <div className='messageBox'>
+              <img className='messageFile' src={pic} alt={text} />
+              <a href={URL.createObjectURL(file)} download={text}>{text}</a>
+            </div>
+          )
+        }
       </div>
     </div>
   )

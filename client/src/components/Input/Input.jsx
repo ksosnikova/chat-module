@@ -26,11 +26,12 @@ const Input = ({ message, setMessage, sendMessage, inputAddon, userInPrivate }) 
           className='inputMessage'
           value={message}
           onChange={ e => setMessage(e.target.value)}
-          onKeyPress={ e => e.key === 'Enter' && sendMessage(e)}
+          onKeyPress={ e => e.key === 'Enter' && !(message.trim() === "") && sendMessage(e)}
          />
         <button className='sentFilesBtn' onClick={inputAddon} id='InputAddon'></button>
         <button className='emojiBtn' onClick={toggleEmojiPicker}>&#128578;</button>
-        <button className='sendMessageBtn' onClick={(e) => sendMessage(e)}>Send</button>
+        <button className='sendMessageBtn' 
+        onClick={(e) => !(message.trim() === "") && sendMessage(e)}>Send</button>
       </form>
       {emojiPickerVisible && <span className='emoji'><Picker onSelect={addEmoji} /></span>}
     </>
