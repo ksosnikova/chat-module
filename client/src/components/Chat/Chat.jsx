@@ -33,7 +33,7 @@ const Chat = ({ location }) => {
 
     const { name, room } = queryString.parse(location.search);
 
-    socket = io(ENDPOINT);
+    socket = io(HEROKUENDPOINT);
 
     setName(name);
     setRoom(room);
@@ -74,7 +74,7 @@ const Chat = ({ location }) => {
       socket.disconnect();
       document.removeEventListener('keydown', handleEsc);
     }
-  }, [ENDPOINT, location.search]);
+  }, [HEROKUENDPOINT, location.search]);
 
 
   const fileRef = useRef(null);
