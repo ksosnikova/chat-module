@@ -84,7 +84,7 @@ io.on('connect', (socket) => {
 
 
   const uploader = new siofu();
-  uploader.dir = __dirname + '/public';
+  uploader.dir = __dirname + '/client/public';
   uploader.listen(socket);
 
   // uploader.on('start', (event) => {
@@ -96,6 +96,7 @@ io.on('connect', (socket) => {
     fs.readFile(event.file.pathName, {
       flag: 'r'
     }, async (err, data) => {
+      console.log('event file' ,event.file)
       const { name, room, id } = getUser(socket.id);
       const mimeType = mime.lookup(path.extname(event.file.pathName));
       const encoded = data.toString('base64');

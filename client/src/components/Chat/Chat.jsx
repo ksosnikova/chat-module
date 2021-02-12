@@ -19,7 +19,7 @@ const Chat = ({ location }) => {
   const [usersInRoom, setUsersInRoom] = useState([]);
   const [userInPrivate, setUserInPrivate] = useState('');
 
-  //const ENDPOINT = 'localhost:5000';
+  const ENDPOINT = 'localhost:5000';
   const HEROKUENDPOINT = 'https://chat-app-module.herokuapp.com';
 
   const handleEsc = (e) => {
@@ -33,7 +33,7 @@ const Chat = ({ location }) => {
 
     const { name, room } = queryString.parse(location.search);
 
-    socket = io(HEROKUENDPOINT);
+    socket = io(ENDPOINT);
 
     setName(name);
     setRoom(room);
@@ -74,7 +74,7 @@ const Chat = ({ location }) => {
       socket.disconnect();
       document.removeEventListener('keydown', handleEsc);
     }
-  }, [HEROKUENDPOINT, location.search]);
+  }, [ENDPOINT, location.search]);
 
 
   const fileRef = useRef(null);
