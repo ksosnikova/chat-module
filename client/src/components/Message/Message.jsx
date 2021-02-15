@@ -28,7 +28,7 @@ export const Message = ({ message: { text, user, url = null }, name }) => {
   }
 
   return (
-    <div className={isSentByCurrentUser ? 'messageContainer reverse' : 'messageContainer'}>
+    <div className={`messageContainer ${isSentByCurrentUser ? 'reverse' : ''}`}>
       <p className='sentMessage'>{user}</p>
       <div className={isSentByCurrentUser ? 'messageSentBy colored' : 'messageSentBy'}>
         {!url && <div className='messageBox'>{text}</div>}
