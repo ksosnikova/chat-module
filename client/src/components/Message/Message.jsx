@@ -2,13 +2,10 @@ import React from 'react';
 import './Message.css';
 import pic from '../../assets/images/file.png';
 
+
 export const Message = ({ message: { text, user, url = null }, name }) => {
 
-  let isSentByCurrentUser = false;
-
-  if ((user === name) || (user.includes('private'))) {
-    isSentByCurrentUser = true;
-  }
+  const isSentByCurrentUser = (user === name) || user.includes('private');
 
   const isImage = (f) => f.type.indexOf('image') > -1;
 
@@ -19,7 +16,7 @@ export const Message = ({ message: { text, user, url = null }, name }) => {
     const mime = arr[0].match(/:(.*?);/)[1];
     const bstr = atob(arr[1]);
     let n = bstr.length;
-    let u8arr = new Uint8Array(n);
+    const u8arr = new Uint8Array(n);
 
     while (n--) {
       u8arr[n] = bstr.charCodeAt(n);

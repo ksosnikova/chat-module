@@ -9,6 +9,8 @@ import Messages from '../Messages/Messages';
 import { User } from '../User/User';
 
 let socket;
+const ENDPOINT = 'localhost:5000';
+const HEROKUENDPOINT = 'https://chat-app-module.herokuapp.com';
 
 const Chat = ({ location }) => {
 
@@ -19,9 +21,6 @@ const Chat = ({ location }) => {
   const [usersInRoom, setUsersInRoom] = useState([]);
   const [userInPrivate, setUserInPrivate] = useState('');
 
-  //const ENDPOINT = 'localhost:5000';
-  const HEROKUENDPOINT = 'https://chat-app-module.herokuapp.com';
-
   const handleEsc = (e) => {
     if (e.code === 'Escape' || e.code === 'Esc') {
       setUserInPrivate('');
@@ -29,7 +28,6 @@ const Chat = ({ location }) => {
   };
 
   useEffect(() => {
-    document.addEventListener('keydown', handleEsc);
 
     const { name, room } = queryString.parse(location.search);
 
@@ -72,9 +70,8 @@ const Chat = ({ location }) => {
 
     return () => {
       socket.disconnect();
-      document.removeEventListener('keydown', handleEsc);
     }
-  }, [HEROKUENDPOINT, location.search]);
+  }, [location.search]);
 
 
   const fileRef = useRef(null);
@@ -85,6 +82,9 @@ const Chat = ({ location }) => {
   useEffect(() => {
     const siofu = new SocketIOFileUpload(socket);
     siofu.listenOnInput(fileRef.current);
+
+    document.addEventListener('keydown', handleEsc);
+    return () => { document.removeEventListener('keydown', handleEsc);}
   }, []);
 
   useEffect(() => {
