@@ -84,15 +84,35 @@
 }
 
 @media (min-width: 320px) and (max-width: 480px) {
+  .chatWrapper {
+    height: 100%;
+    min-height: inherit;
+  }
+
   .chatContainer {
     width: 100%;
     display: block;
   }
+
   .chatHeading {
     grid-column: none;
+    font-size: 25px;
   }
+
   .chatMembersTitle {
     display: none;
+  }
+
+  .chatMembersList {
+    max-height: 100px;
+  }
+
+  .chatInnerContainer {
+    max-height: 400px;
+  }
+
+  .chatMembers {
+    padding-bottom: 5px;
   }
 }
 
